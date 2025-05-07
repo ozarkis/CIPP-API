@@ -17,7 +17,7 @@ Function Invoke-ExecExtensionsConfig {
     $Body = [PSCustomObject]$Request.Body
     $Results = try {
         # Check if NinjaOne URL is set correctly and the instance has at least version 5.6
-        if ($Body.NinjaOne) {
+        if ($Body.NinjaOne.Enabled -eq $true) {
             $AllowedNinjaHostnames = @(
                 'app.ninjarmm.com',
                 'eu.ninjarmm.com',
@@ -38,7 +38,7 @@ Function Invoke-ExecExtensionsConfig {
                 Write-Information 'Not sending to keyvault. Key previously set or left blank.'
             } else {
                 Write-Information 'writing API Key to keyvault, and clearing.'
-                Write-Information "$ENV:WEBSITE_DEPLOYMENT_ID"
+                Write-Information "$env:WEBSITE_DEPLOYMENT_ID"
                 if ($Body.$APIKey.APIKey) {
                     Set-ExtensionAPIKey -Extension $APIKey -APIKey $Body.$APIKey.APIKey
                 }
